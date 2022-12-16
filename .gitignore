@@ -285,3 +285,4 @@ poetry.toml
 *.mp3
 *.csv
 .idea/.name
+*.psd
