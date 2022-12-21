@@ -3,16 +3,6 @@
 
 import pygame
 from gui import GUI
+from control import Control
 
 gui = GUI()
-
-pygame.mixer.init()
-
-
-def stop():
-    pygame.mixer.music.stop()
-
-
-def play():
-    # pygame.mixer.music.load(control.song_path)
-    pygame.mixer.music.play(loops=2)

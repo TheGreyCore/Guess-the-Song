@@ -1,22 +1,27 @@
-from pandas import DataFrame
+from pandas import DataFrame, concat, Series
 
 print("""=====================================================================
-Type name(answer), then type filename. For exit/break type exit.
+Type the name(answer), then type the file name. For exit/break type exit.
+PS: "-" replacing with new line!
+PS: Max 30 symbols!
 =====================================================================""")
 
-dict_playlist = {}
+playlist = DataFrame(columns=["Names", "Paths"])
 
 while True:
-    name = input("Name: ").lower()
+    name = input("Name: ").title()
 
     if name == "exit":
         break
+    elif len(name) > 30:
+        print("Max 30 symbols!")
+        name = input("Name: ").title()
 
-    path = input("Filepath: ")
+    filename = input("File name: ")
 
-    dict_playlist[name] = f"songs/{path}"
+    user_input = [name, filename]
+    playlist.loc[len(playlist)] = user_input
 
-playlist = DataFrame(dict_playlist, index=[0])
 playlist.to_csv("list.csv")
 
 print(f"""Playlist: 
