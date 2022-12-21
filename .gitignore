@@ -286,3 +286,11 @@ poetry.toml
 *.csv
 .idea/.name
 *.psd
+source/buttons/Button_0_1
+source/buttons/Button_0_2
+source/buttons/Button_1_1
+source/buttons/Button_1_2
+source/buttons/Button_2_1
+source/buttons/Button_2_2
+source/buttons/Button_3_1
+source/buttons/Button_3_2
