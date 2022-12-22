@@ -1,8 +1,9 @@
 import random
-
 from PIL import Image, ImageDraw, ImageFont
-from random import choice
 import pandas
+import pygame
+
+pygame.mixer.init()
 
 DATA_PATH = "songs/list.csv"
 data = pandas.read_csv(DATA_PATH)
@@ -22,26 +23,47 @@ BUTTON_TEMPLATE_PATH = "source/template/buttons/"
 BUTTON_FONT_PATH = "source/fonts/Unbounded-VariableFont_wght.ttf"
 BUTTON_FONT_SIZE = 14
 BUTTON_FONT = ImageFont.truetype(BUTTON_FONT_PATH, BUTTON_FONT_SIZE)
-
 class Control:
 
     def __init__(self):
         self.song_name = None
         self.song_path = None
-        print("Init")
+        self.play_status = False
+        self.correct_answer_id = None
 
-    def random_song(self, ):
-        correct_answer_id = random.randint(0, 3)
+    def random_song(self):
+        self.correct_answer_id = random.randint(0, 3)
         not_taken_songs_names = names.copy()
+        correct_song_name = random.choice(not_taken_songs_names)
+        not_taken_songs_names.remove(correct_song_name)
+        print(correct_song_name)
+        generate_buttons_images(correct_song_name, True, f"Button_{self.correct_answer_id}")
 
         for i in range(0,4):
-            song_name = random.choice(not_taken_songs_names)
-            not_taken_songs_names.remove(song_name)
-            if correct_answer_id == i:
-                generate_buttons_images(song_name, True, f"Button_{i}")
+            if self.correct_answer_id == i:
+                pass
             else:
+                song_name = random.choice(not_taken_songs_names)
+                not_taken_songs_names.remove(song_name)
                 generate_buttons_images(song_name, False, f"Button_{i}")
-        return [names[correct_answer_id], paths[correct_answer_id]]
+
+        return [correct_song_name, paths[names.index(correct_song_name)]]
+
+    def play_button(self, song_path: None):
+        if self.play_status:
+            pygame.mixer.music.stop()
+            self.play_status = False
+        else:
+            pygame.mixer.music.load(f"songs/{song_path}")
+            pygame.mixer.music.play(loops=2)
+            self.play_status = True
+
+    def check_answer(self, button_id):
+        if self.correct_answer_id == button_id:
+            return True
+        else:
+            return False
+
 
 def generate_buttons_images(text, green_or_red, button_name):
     # Function for generating images for button canvas
