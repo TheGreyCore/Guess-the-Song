@@ -15,7 +15,6 @@ class GUI:
         self.root = Tk()
         self.root.title("Guess the Song!")
         self.root.config(padx=20, pady=20, background=BACKGROUND)
-        self.test_image = PhotoImage(file=f"source/buttons/Button.png")
         panel_small = PhotoImage(file="source/template/buttons/panel_short.png")
 
         # Buttons
