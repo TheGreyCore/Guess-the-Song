@@ -38,7 +38,7 @@ class Control:
         not_taken_songs_names = names.copy()
         correct_song_name = random.choice(not_taken_songs_names)
         not_taken_songs_names.remove(correct_song_name)
-        print(correct_song_name)
+        # print(correct_song_name)
         generate_buttons_images(correct_song_name, True, f"Button_{self.correct_answer_id}")
 
         for i in range(0, 4):

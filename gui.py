@@ -41,7 +41,7 @@ class GUI:
         self.buttons[2].grid(row=1, column=0)
         self.buttons[3].grid(row=1, column=1)
 
-        button_play_image = PhotoImage(file="images/play_button.png")
+        button_play_image = PhotoImage(file="source/buttons/play_button.png")
         self.button_play = Button(
             self.root,
             image=button_play_image,
