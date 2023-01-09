@@ -54,7 +54,7 @@ class GUI:
         # Canvas
         self.canvas = Canvas(width=320, height=120, background=BACKGROUND, highlightthickness=0)
         self.canvas.create_image(160, 60, image=panel_small)
-        self.canvas.create_text(160, 60, text="R: 0 W:0", font=(FONT, 20))
+        self.score_bar_text = self.canvas.create_text(160, 60, text="R: 0 W:0", font=(FONT, 20))
         self.canvas.grid(row=3, column=1)
 
         self.root.mainloop()
@@ -82,3 +82,8 @@ class GUI:
             image = PhotoImage(file=f"source/buttons/Button_{button_id}_2")
             self.buttons[button_id].configure(image=image)
             self.buttons[button_id].image = image
+
+        self.update_score_bar()
+
+    def update_score_bar(self):
+        self.canvas.itemconfig(self.score_bar_text, text=f"R:{control.score[0]} W:{control.score[1]}")

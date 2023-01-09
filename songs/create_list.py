@@ -26,3 +26,4 @@ playlist.to_csv("list.csv")
 
 print(f"""Playlist: 
 {playlist}""")
+

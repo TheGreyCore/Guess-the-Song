@@ -32,6 +32,7 @@ class Control:
         self.song_path = None
         self.play_status = False
         self.correct_answer_id = None
+        self.score = [0, 0] # score[0] == Right answers , score[1] == Wrong answers
 
     def random_song(self):
         self.correct_answer_id = random.randint(0, 3)
@@ -70,8 +71,10 @@ class Control:
 
     def check_answer(self, button_id):
         if self.correct_answer_id == button_id:
+            self.score[0] += 1
             return True
         else:
+            self.score[1] += 1
             return False
 
 
@@ -105,3 +108,4 @@ def generate_buttons_images(text, green_or_red, button_name):
         # If this wrong option
         with Image.open(f"{BUTTON_TEMPLATE_PATH}panel_short_red.png") as image:
             add_image_text(button_template=image, num=2)
+
