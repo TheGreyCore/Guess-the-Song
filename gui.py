@@ -12,10 +12,13 @@ control.play_new_song(correct_answer[1])
 
 class GUI:
     def __init__(self):
+
+        # Windows settings
         self.root = Tk()
         self.root.title("Guess the Song!")
+        self.root.iconbitmap("source/ico/logo.ico")
         self.root.config(padx=20, pady=20, background=BACKGROUND)
-        panel_small = PhotoImage(file="source/template/buttons/panel_short.png")
+
 
         # Buttons
         images = []
@@ -47,15 +50,16 @@ class GUI:
             image=button_play_image,
             highlightthickness=0,
             bd=0,
-            command=lambda: control.play_or_stop_music(correct_answer[1])
+            command=lambda: control.play_or_stop_music()
         )
-        self.button_play.grid(row=3, column=0)
+        self.button_play.grid(row=2, column=0)
 
         # Canvas
+        panel_small = PhotoImage(file="source/template/buttons/panel_short.png")
         self.canvas = Canvas(width=320, height=120, background=BACKGROUND, highlightthickness=0)
         self.canvas.create_image(160, 60, image=panel_small)
         self.score_bar_text = self.canvas.create_text(160, 60, text="R: 0 W:0", font=(FONT, 20))
-        self.canvas.grid(row=3, column=1)
+        self.canvas.grid(row=2, column=1)
 
         self.root.mainloop()
 

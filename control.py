@@ -32,7 +32,7 @@ class Control:
         self.song_path = None
         self.play_status = False
         self.correct_answer_id = None
-        self.score = [0, 0] # score[0] == Right answers , score[1] == Wrong answers
+        self.score = [0, 0] # score[0] == Correct answers , score[1] == Incorrect  answers
 
     def random_song(self):
         self.correct_answer_id = random.randint(0, 3)
@@ -52,13 +52,12 @@ class Control:
 
         return [correct_song_name, paths[names.index(correct_song_name)]]
 
-    def play_or_stop_music(self, song_path: None):
+    def play_or_stop_music(self):
         if self.play_status:
-            pygame.mixer.music.stop()
+            pygame.mixer.music.pause()
             self.play_status = False
         else:
-            pygame.mixer.music.load(f"songs/{song_path}")
-            pygame.mixer.music.play(loops=2)
+            pygame.mixer.music.unpause()
             self.play_status = True
 
     def play_new_song(self, song_path):
