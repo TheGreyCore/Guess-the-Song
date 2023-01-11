@@ -1,12 +1,13 @@
-import random
+from random import randint, choice
 from PIL import Image, ImageDraw, ImageFont
-import pandas
-import pygame
+from pandas import read_csv
+from pygame import mixer
+from pygame import error as py_error
 
-pygame.mixer.init()
+mixer.init()
 
 DATA_PATH = "songs/list.csv"
-data = pandas.read_csv(DATA_PATH)
+data = read_csv(DATA_PATH)
 # .to_dict('list')
 del data['Unnamed: 0']
 
@@ -35,18 +36,17 @@ class Control:
         self.score = [0, 0] # score[0] == Correct answers , score[1] == Incorrect  answers
 
     def random_song(self):
-        self.correct_answer_id = random.randint(0, 3)
+        self.correct_answer_id = randint(0, 3)
         not_taken_songs_names = names.copy()
-        correct_song_name = random.choice(not_taken_songs_names)
+        correct_song_name = choice(not_taken_songs_names)
         not_taken_songs_names.remove(correct_song_name)
-        # print(correct_song_name)
         generate_buttons_images(correct_song_name, True, f"Button_{self.correct_answer_id}")
 
         for i in range(0, 4):
             if self.correct_answer_id == i:
                 pass
             else:
-                song_name = random.choice(not_taken_songs_names)
+                song_name = choice(not_taken_songs_names)
                 not_taken_songs_names.remove(song_name)
                 generate_buttons_images(song_name, False, f"Button_{i}")
 
@@ -54,18 +54,18 @@ class Control:
 
     def play_or_stop_music(self):
         if self.play_status:
-            pygame.mixer.music.pause()
+            mixer.music.pause()
             self.play_status = False
         else:
-            pygame.mixer.music.unpause()
+            mixer.music.unpause()
             self.play_status = True
 
     def play_new_song(self, song_path):
         try:
-            pygame.mixer.music.load(f"songs/{song_path}")
-            pygame.mixer.music.play(loops=2)
+            mixer.music.load(f"songs/{song_path}")
+            mixer.music.play(loops=2)
             self.play_status = True
-        except pygame.error as error:
+        except py_error as error:
             return error
 
     def check_answer(self, button_id):
@@ -78,7 +78,7 @@ class Control:
 
 
 def generate_buttons_images(text, green_or_red, button_name):
-    # Function for generating images for button canvas
+    # Function for generating images for buttons
     def add_image_text(button_template, num):
         image_text = ImageDraw.Draw(button_template)
         text_length = image_text.textlength(text, font=BUTTON_FONT) // 2

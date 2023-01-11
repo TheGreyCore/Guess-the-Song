@@ -19,8 +19,7 @@ class GUI:
         self.root.iconbitmap("source/ico/logo.ico")
         self.root.config(padx=20, pady=20, background=BACKGROUND)
 
-
-        # Buttons
+        # Create buttons with answers
         images = []
         self.buttons = []
         for i in range(0, 4):
@@ -34,16 +33,19 @@ class GUI:
             )
             )
 
+        # Add function to them
         self.buttons[0].config(command=lambda: self.press_answer_button(0))
         self.buttons[1].config(command=lambda: self.press_answer_button(1))
         self.buttons[2].config(command=lambda: self.press_answer_button(2))
         self.buttons[3].config(command=lambda: self.press_answer_button(3))
 
+        # Set position
         self.buttons[0].grid(row=0, column=0)
         self.buttons[1].grid(row=0, column=1)
         self.buttons[2].grid(row=1, column=0)
         self.buttons[3].grid(row=1, column=1)
 
+        # Create Play and pause button
         button_play_image = PhotoImage(file="source/buttons/play_button.png")
         self.button_play = Button(
             self.root,
@@ -54,40 +56,42 @@ class GUI:
         )
         self.button_play.grid(row=2, column=0)
 
-        # Canvas
+        # Create information panel
         panel_small = PhotoImage(file="source/template/buttons/panel_short.png")
-        self.canvas = Canvas(width=320, height=120, background=BACKGROUND, highlightthickness=0)
-        self.canvas.create_image(160, 60, image=panel_small)
-        self.score_bar_text = self.canvas.create_text(160, 60, text="R: 0 W:0", font=(FONT, 20))
-        self.canvas.grid(row=2, column=1)
+        self.information_panel = Canvas(width=320, height=120, background=BACKGROUND, highlightthickness=0)
+        self.information_panel.create_image(160, 60, image=panel_small)
+        self.score_bar_text = self.information_panel.create_text(160, 60, text="R: 0 W:0", font=(FONT, 20))
+        self.information_panel.grid(row=2, column=1)
 
+        # Loop GUI
         self.root.mainloop()
 
     def press_answer_button(self, button_id):
+
+        # Set red stroke for button - if incorrect answer, green when correct
+        new_button_image = PhotoImage(file=f"source/buttons/Button_{button_id}_2")
+        self.buttons[button_id].configure(image=new_button_image)
+        self.buttons[button_id].image = new_button_image
+
         if control.check_answer(button_id):
-            correct_image = PhotoImage(file=f"source/buttons/Button_{button_id}_2")
-            self.buttons[button_id].configure(image=correct_image)
-            self.buttons[button_id].image = correct_image
+            self.changing_image = True # To prevent double click
             self.root.update()
             sleep(1)
-
             global correct_answer
             correct_answer = control.random_song()
-            error = control.play_new_song(correct_answer[1])
-            if error:
-                messagebox.showerror(title="Error", message=f"Check your mp3 file!\n Error: {error}")
+
+            try:
+                control.play_new_song(correct_answer[1])
+            except FileNotFoundError:
+                messagebox.showerror(title="Error", message=f"Song file not found!")
 
             images = []
             for i in range(0, 4):
                 images.append(PhotoImage(file=f"source/buttons/Button_{i}_1"))
                 self.buttons[i].configure(image=images[i])
                 self.buttons[i].image = images[i]
-        else:
-            image = PhotoImage(file=f"source/buttons/Button_{button_id}_2")
-            self.buttons[button_id].configure(image=image)
-            self.buttons[button_id].image = image
 
         self.update_score_bar()
 
     def update_score_bar(self):
-        self.canvas.itemconfig(self.score_bar_text, text=f"R:{control.score[0]} W:{control.score[1]}")
+        self.information_panel.itemconfig(self.score_bar_text, text=f"R:{control.score[0]} W:{control.score[1]}")
