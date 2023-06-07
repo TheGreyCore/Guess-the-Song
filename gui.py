@@ -74,7 +74,6 @@ class GUI:
         self.buttons[button_id].image = new_button_image
 
         if control.check_answer(button_id):
-            self.changing_image = True # To prevent double click
             self.root.update()
             sleep(1)
             global correct_answer
